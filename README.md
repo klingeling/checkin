@@ -39,3 +39,10 @@ fork本仓库并设置好Secret后即可自动签到.
 | :-:              | :-:              |
 | IYINGDI_USER     | 旅法师营地用户名 |
 | IYINGDI_PASSWORD | 旅法师营地密码   |
+
+### 我的Galgame资源发布站 - 忧郁的loli_忧郁的弟弟
+
+| secret名称       | 说明             |
+| :-:              | :-:              |
+| KKGAL_USER     | 我的Galgame资源发布站用户名 |
+| KKGAL_PASSWORD | 我的Galgame资源发布站密码   |

@@ -28,7 +28,7 @@ def chicken_checkin() -> None:
     passwd = os.environ["CHICKEN_PASSWORD"]
 
     login_resp = client.post(
-        "http://j01.space/signin",
+        "https://j01.space/signin",
         headers={"Content-Type": "application/json;charset=UTF-8"},
         content=json.dumps(
             {"email": email, "passwd": passwd},
@@ -38,7 +38,7 @@ def chicken_checkin() -> None:
     logger.info(login_resp.json())
 
     checkin_resp = client.post(
-        "http://j01.space/user/checkin"
+        "https://j01.space/user/checkin"
     )
     logger.info(checkin_resp.json())
 
@@ -88,7 +88,7 @@ def vgtime_checkin() -> None:
     )
 
     login_resp = client.post(
-        "http://www.vgtime.com/handle/login.jhtml",
+        "https://www.vgtime.com/handle/login.jhtml",
         headers={"User-Agent": ua},
         data={
             "username": username,
@@ -99,7 +99,7 @@ def vgtime_checkin() -> None:
     logger.info(login_resp.json()["message"])
 
     client.post(
-        "http://www.vgtime.com/uc/sign.jhtml",
+        "https://www.vgtime.com/uc/sign.jhtml",
         headers={"User-Agent": ua}
     )
 
