@@ -12,7 +12,6 @@ import re
 import time
 from hashlib import md5
 from typing import List, Optional
-from urllib.parse import urlencode
 
 import httpx
 
@@ -166,7 +165,7 @@ def kkgal_checkin() -> None:
 
     logger = logging.getLogger("kkgal")
 
-    url = "https://www.kkgal.com/wp-admin/admin-ajax.php"
+    url = "https://www.kkgal.com/wp-login.php"
 
     client = httpx.Client()
     username = os.environ["KKGAL_USER"]
@@ -181,7 +180,7 @@ def kkgal_checkin() -> None:
             "submit": ""
         }
     )
-    logger.info(login_resp.json())
+    # logger.info(login_resp.json())
 
 
 if __name__ == "__main__":
