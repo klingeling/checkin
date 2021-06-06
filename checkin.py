@@ -147,6 +147,30 @@ def iyingdi_checkin() -> None:
         client.get(f"https://www.iyingdi.com{search.group(0)}")
 
 
+def kkgal_checkin() -> None:
+    """kkgal签到
+    """
+
+    logger = logging.getLogger("kkgal")
+
+    url = "https://www.kkgal.com/wp-admin/admin-ajax.php"
+
+    client = httpx.Client()
+    username = os.environ["KKGAL_USER"]
+    password = os.environ["KKGAL_PASSWORD"]
+
+    login_resp = client.post(
+        url,
+        data={
+            "log": username,
+            "pwd": password,
+            "password": "forever",
+            "submit": ""
+        }
+    )
+    logger.info(login_resp.json())
+
+
 if __name__ == "__main__":
 
     logging.config.dictConfig({
@@ -175,7 +199,7 @@ if __name__ == "__main__":
 
     errors = []  # type: List[Optional[Exception]]
     for func in (
-        chicken_checkin, lovezhuoyou_checkin, vgtime_checkin, iyingdi_checkin
+        chicken_checkin, lovezhuoyou_checkin, vgtime_checkin, iyingdi_checkin, kkgal_checkin
     ):
         try:
             func()
