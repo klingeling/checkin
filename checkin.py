@@ -22,7 +22,7 @@ def chicken_checkin() -> None:
 
     logger = logging.getLogger("chicken")
 
-    client = httpx.Client()
+    client = httpx.Client(timeout=50)
     email = os.environ["CHICKEN_MAIL"]
     passwd = os.environ["CHICKEN_PASSWORD"]
 
@@ -50,7 +50,7 @@ def lovezhuoyou_checkin() -> None:
 
     url = "https://www.lovezhuoyou.com/wp-admin/admin-ajax.php"
 
-    client = httpx.Client()
+    client = httpx.Client(timeout=50)
     username = os.environ["LOVEZHUOYOU_USER"]
     password = os.environ["LOVEZHUOYOU_PASSWORD"]
 
@@ -77,7 +77,7 @@ def vgtime_checkin() -> None:
 
     logger = logging.getLogger("vgtime")
 
-    client = httpx.Client()
+    client = httpx.Client(timeout=50)
     username = os.environ["VGTIME_USER"]
     password = os.environ["VGTIME_PASSWORD"]
 
@@ -107,7 +107,7 @@ def iyingdi_checkin() -> None:
     """旅法师营地签到
     """
 
-    client = httpx.Client()
+    client = httpx.Client(timeout=50)
 
     username = os.environ["IYINGDI_USER"]
     password = os.environ["IYINGDI_PASSWORD"]
@@ -167,7 +167,7 @@ def kkgal_checkin() -> None:
 
     url = "https://www.kkgal.com/wp-login.php"
 
-    client = httpx.Client()
+    client = httpx.Client(timeout=50)
     username = os.environ["KKGAL_USER"]
     password = os.environ["KKGAL_PASSWORD"]
 
