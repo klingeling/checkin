@@ -115,13 +115,26 @@ def iyingdi_checkin() -> None:
     timestamp = str(int(time.time()))
     key = "b8d5b38577b8bb382b0c783b474b95f9"
 
-    sign = md5(urlencode({
-            "password": password,
-            "timestamp": timestamp,
-            "type": "password",
-            "username": username,
-            "key": key
-    }).encode()).hexdigest()
+    # sign = md5(urlencode({
+    #         "password": password,
+    #         "timestamp": timestamp,
+    #         "type": "password",
+    #         "username": username,
+    #         "key": key
+    # }).encode()).hexdigest()
+
+    msg = ""
+    for k, v in {
+        "password": password,
+        "timestamp": timestamp,
+        "type": "password",
+        "username": username,
+        "key": key
+    }.items():
+        msg += f"&{k}={v}"
+    # msg = msg[1:]
+    msg = msg.lstrip("&")
+    sign = md5(msg.encode()).hexdigest()
 
     login_resp = client.post(
         "https://api.iyingdi.com/web/user/login",
@@ -198,9 +211,9 @@ if __name__ == "__main__":
     })
 
     errors = []  # type: List[Optional[Exception]]
-    for func in (
+    for func in [
         chicken_checkin, lovezhuoyou_checkin, vgtime_checkin, iyingdi_checkin, kkgal_checkin
-    ):
+    ]:
         try:
             func()
         except Exception as e:
