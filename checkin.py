@@ -176,8 +176,10 @@ def kkgal_checkin() -> None:
         data={
             "log": username,
             "pwd": password,
-            "password": "forever",
-            "submit": ""
+            "rememberme": "forever",
+            "wp": "登录",
+            "redirect_to": "https://www.kkgal.com/",
+            "testcookie": "1"
         }
     )
     # logger.info(login_resp.json())
