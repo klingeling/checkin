@@ -194,10 +194,10 @@ def kkgal_checkin() -> None:
     }
     client.cookies.update({k: str(v) for k, v in cookies.items()})
     profile_points_resp = client.get("https://www.kkgal.com/wp-admin/profile.php?page=mycred_default_history")
-    points_change = BeautifulSoup(profile_points_resp.text, "html.parser").find(text="每天浏览网站获得积分").parent.contents[0]
+    points_change = BeautifulSoup(profile_points_resp.text, "html.parser").find(text=re.compile("^每天浏览网站获得积分")).parent.contents[0].text
     profile_resp = client.get("https://www.kkgal.com/wp-admin/profile.php")
     points = BeautifulSoup(profile_resp.text, "html.parser").find(text=re.compile("^积分:"))
-    logger.info("最近一次获取经验时间： " + points_change.text + "\t总" + points)
+    logger.info("最近一次获取经验时间： " + points_change + "\t总" + points)
 
 
 if __name__ == "__main__":
