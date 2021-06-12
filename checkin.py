@@ -12,6 +12,7 @@ import re
 import time
 from hashlib import md5
 from typing import List, Optional
+from bs4 import BeautifulSoup
 
 import httpx
 
@@ -150,7 +151,11 @@ def iyingdi_checkin() -> None:
         }
     )
 
-    cookies = {"yd_token": login_resp.json()["login_token"]}
+    cookies = {
+        "yd_token": login_resp.json()["login_token"],
+        "yd_refresh_token": login_resp.json()["refresh_token"],
+        "user_id": login_resp.json()["user_id"]
+    }
     client.cookies.update({k: str(v) for k, v in cookies.items()})
 
     artical_resp = client.get("https://www.iyingdi.com/tz/tag/19")
@@ -177,12 +182,20 @@ def kkgal_checkin() -> None:
             "log": username,
             "pwd": password,
             "rememberme": "forever",
-            "wp": "登录",
+            "wp-submit": "登录",
             "redirect_to": "https://www.kkgal.com/",
             "testcookie": "1"
         }
     )
-    # logger.info(login_resp.json())
+    cookies = {
+        "security_session_verify": login_resp.cookies.get("security_session_verify"),
+        "wordpress_test_cookie": login_resp.cookies.get("wordpress_test_cookie"),
+        "PHPSESSID": login_resp.cookies.get("PHPSESSID")
+    }
+    client.cookies.update({k: str(v) for k, v in cookies.items()})
+    profile_resp = client.get("https://www.kkgal.com/wp-admin/profile.php?page=mycred_default_history")
+    soup = BeautifulSoup(profile_resp.text, "html.parser").find(text="每天浏览网站获得积分").parent.contents[0].text
+    logger.info("最近一次获取经验时间： " + soup)
 
 
 if __name__ == "__main__":
