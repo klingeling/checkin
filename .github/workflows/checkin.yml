@@ -21,7 +21,7 @@ jobs:
           python-version: 3.8
 
       - name: install dependencies
-        run: pip install httpx
+        run: pip install httpx bs4
 
       - name: checkin
         env:
