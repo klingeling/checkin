@@ -182,11 +182,10 @@ def kkgal_checkin() -> None:
             "log": username,
             "pwd": password,
             "rememberme": "forever",
-            "wp-submit": "登录",
-            "redirect_to": "https://www.kkgal.com/",
-            "testcookie": "1"
+            "submit": ""
         }
     )
+
     cookies = {
         "security_session_verify": login_resp.cookies.get("security_session_verify"),
         "wordpress_test_cookie": login_resp.cookies.get("wordpress_test_cookie"),
