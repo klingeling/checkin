@@ -98,10 +98,12 @@ def vgtime_checkin() -> None:
     )
     logger.info(login_resp.json()["message"])
 
-    client.post(
+    sign_resp = client.get(
         "https://www.vgtime.com/uc/sign.jhtml",
         headers={"User-Agent": ua}
     )
+    flag = BeautifulSoup(sign_resp.text, "html.parser").h2.string
+    logger.info(flag)
 
 
 def iyingdi_checkin() -> None:
