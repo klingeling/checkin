@@ -197,9 +197,9 @@ def kkgal_checkin() -> None:
     # print(points_change)
     # points_change_parent = points_change.parent.contents[0].text
     profile_resp = client.get("https://www.kkgal.com/wp-admin/profile.php")
-    points = BeautifulSoup(profile_resp.text, "html.parser").find(text=re.compile("^积分:")).string
+    points = BeautifulSoup(profile_resp.text, "html.parser").find(text=re.compile("^积分:"))
     # logger.info("最近一次获取经验时间： " + points_change + "\t总" + points)
-    logger.info("\t总" + points)
+    logger.info(points)
 
 if __name__ == "__main__":
 
