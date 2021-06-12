@@ -46,3 +46,10 @@ fork本仓库并设置好Secret后即可自动签到.
 | :-:              | :-:              |
 | KKGAL_USER     | 我的Galgame资源发布站用户名 |
 | KKGAL_PASSWORD | 我的Galgame资源发布站密码   |
+
+### 速鹰666 
+
+| secret名称       | 说明             |
+| :-:              | :-:              |
+| SUYING_USER     | 速鹰666用户名 |
+| SUYING_PASSWORD | 速鹰666密码   |

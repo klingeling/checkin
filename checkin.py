@@ -98,12 +98,10 @@ def vgtime_checkin() -> None:
     )
     logger.info(login_resp.json()["message"])
 
-    sign_resp = client.get(
+    client.post(
         "https://www.vgtime.com/uc/sign.jhtml",
         headers={"User-Agent": ua}
     )
-    flag = BeautifulSoup(sign_resp.text, "html.parser").h2.string
-    logger.info(flag)
 
 
 def iyingdi_checkin() -> None:
@@ -174,7 +172,7 @@ def kkgal_checkin() -> None:
 
     url = "https://www.kkgal.com/wp-login.php"
 
-    client = httpx.Client(timeout=50)
+    client = httpx.Client(timeout=200)
     username = os.environ["KKGAL_USER"]
     password = os.environ["KKGAL_PASSWORD"]
 
@@ -184,24 +182,55 @@ def kkgal_checkin() -> None:
             "log": username,
             "pwd": password,
             "rememberme": "forever",
-            "submit": ""
+            "wp-submit": "登录",
+            "redirect_to": "https://www.kkgal.com/",
+            "testcookie": "1"
         }
     )
 
-    cookies = {
-        "security_session_verify": login_resp.cookies.get("security_session_verify"),
-        "wordpress_test_cookie": login_resp.cookies.get("wordpress_test_cookie"),
-        "PHPSESSID": login_resp.cookies.get("PHPSESSID")
-    }
-    client.cookies.update({k: str(v) for k, v in cookies.items()})
-    # profile_points_resp = client.get("https://www.kkgal.com/wp-admin/profile.php?page=mycred_default_history")
-    # points_change = BeautifulSoup(profile_points_resp.text, "html.parser").find(text=re.compile("^每天浏览网站获得积分"))
-    # print(points_change)
-    # points_change_parent = points_change.parent.contents[0].text
+    profile_points_resp = client.get("https://www.kkgal.com/wp-admin/profile.php?ref=site_visit&order=DESC&paged=1&s=&page=mycred_default_history&ref=site_visit&order=DESC&paged=1")
+    points_change = BeautifulSoup(profile_points_resp.text, "html.parser").find("td", class_="column-time")
+    if points_change is not None:
+        points_change = points_change.string
     profile_resp = client.get("https://www.kkgal.com/wp-admin/profile.php")
-    points = BeautifulSoup(profile_resp.text, "html.parser").find(text=re.compile("^积分:"))
-    # logger.info("最近一次获取经验时间： " + points_change + "\t总" + points)
-    logger.info(points)
+    points = BeautifulSoup(profile_resp.text, "html.parser").find(
+        "li",
+        id="wp-admin-bar-mycred-account-balance-mycred-default1")
+    if points is not None:
+        points = points.contents[0].text
+    logger.info("最近一次获取经验时间： " + str(points_change) + "\t总" + str(points))
+
+
+def suying_checkin() -> None:
+    """suying666签到
+    """
+
+    logger = logging.getLogger("suying666")
+
+    url = "https://suying66.com/auth/login"
+
+    client = httpx.Client(timeout=50)
+    username = os.environ["SUYING_USER"]
+    password = os.environ["SUYING_PASSWORD"]
+
+    login_resp = client.post(
+        url,
+        data={
+            "email": username,
+            "passwd": password,
+            "code": "",
+            "rememberme_me": "on"
+        }
+    )
+
+    logger.info(login_resp.json())
+
+    checkin_resp = client.post(
+        "https://suying66.com/user/checkin"
+    )
+
+    logger.info(checkin_resp.json())
+
 
 if __name__ == "__main__":
 
@@ -231,7 +260,12 @@ if __name__ == "__main__":
 
     errors = []  # type: List[Optional[Exception]]
     for func in [
-        chicken_checkin, lovezhuoyou_checkin, vgtime_checkin, iyingdi_checkin, kkgal_checkin
+        chicken_checkin,
+        lovezhuoyou_checkin,
+        vgtime_checkin,
+        iyingdi_checkin,
+        kkgal_checkin,
+        suying_checkin
     ]:
         try:
             func()

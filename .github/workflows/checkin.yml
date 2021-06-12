@@ -35,4 +35,6 @@ jobs:
           IYINGDI_PASSWORD: ${{ secrets.IYINGDI_PASSWORD }}
           KKGAL_USER: ${{ secrets.KKGAL_USER }}
           KKGAL_PASSWORD: ${{ secrets.KKGAL_PASSWORD }}
+          SUYING_USER: ${{ secrets.SUYING_USER }}
+          SUYING_PASSWORD: ${{ secrets.SUYING_PASSWORD }}
         run: python checkin.py
