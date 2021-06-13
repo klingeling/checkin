@@ -12,9 +12,9 @@ import re
 import time
 from hashlib import md5
 from typing import List, Optional
-from bs4 import BeautifulSoup
 
 import httpx
+from bs4 import BeautifulSoup
 
 
 def chicken_checkin() -> None:
@@ -98,10 +98,11 @@ def vgtime_checkin() -> None:
     )
     logger.info(login_resp.json()["message"])
 
-    client.post(
-        "https://www.vgtime.com/uc/sign.jhtml",
+    checkin_resp = client.post(
+        "https://www.vgtime.com/uc/writesign.jhtml",
         headers={"User-Agent": ua}
     )
+    logger.info(checkin_resp.json()["message"])
 
 
 def iyingdi_checkin() -> None:
