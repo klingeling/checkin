@@ -37,4 +37,5 @@ jobs:
           KKGAL_PASSWORD: ${{ secrets.KKGAL_PASSWORD }}
           SUYING_USER: ${{ secrets.SUYING_USER }}
           SUYING_PASSWORD: ${{ secrets.SUYING_PASSWORD }}
+          SMZDM_SESS_COOKIE: ${{ secrets.SMZDM_SESS_COOKIE }}
         run: python checkin.py
