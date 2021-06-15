@@ -17,6 +17,12 @@ import httpx
 from bs4 import BeautifulSoup
 
 
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    + "(KHTML, like Gecko) Chrome/90.0.4430.95 Safari/537.36"
+)
+
+
 def chicken_checkin() -> None:
     """几鸡签到
     """
@@ -82,14 +88,9 @@ def vgtime_checkin() -> None:
     username = os.environ["VGTIME_USER"]
     password = os.environ["VGTIME_PASSWORD"]
 
-    ua = (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-        + "(KHTML, like Gecko) Chrome/90.0.4430.95 Safari/537.36"
-    )
-
     login_resp = client.post(
         "https://www.vgtime.com/handle/login.jhtml",
-        headers={"User-Agent": ua},
+        headers={"User-Agent": USER_AGENT},
         data={
             "username": username,
             "password": password,
@@ -100,7 +101,7 @@ def vgtime_checkin() -> None:
 
     checkin_resp = client.post(
         "https://www.vgtime.com/uc/writesign.jhtml",
-        headers={"User-Agent": ua}
+        headers={"User-Agent": USER_AGENT}
     )
     logger.info(checkin_resp.json()["message"])
 
@@ -116,15 +117,7 @@ def iyingdi_checkin() -> None:
     timestamp = str(int(time.time()))
     key = "b8d5b38577b8bb382b0c783b474b95f9"
 
-    # sign = md5(urlencode({
-    #         "password": password,
-    #         "timestamp": timestamp,
-    #         "type": "password",
-    #         "username": username,
-    #         "key": key
-    # }).encode()).hexdigest()
-
-    msg = ""
+    sign_material = ""
     for k, v in {
         "password": password,
         "timestamp": timestamp,
@@ -132,10 +125,9 @@ def iyingdi_checkin() -> None:
         "username": username,
         "key": key
     }.items():
-        msg += f"&{k}={v}"
-    # msg = msg[1:]
-    msg = msg.lstrip("&")
-    sign = md5(msg.encode()).hexdigest()
+        sign_material += f"&{k}={v}"
+    sign_material = sign_material.lstrip("&")
+    sign = md5(sign_material.encode()).hexdigest()
 
     login_resp = client.post(
         "https://api.iyingdi.com/web/user/login",
@@ -233,6 +225,29 @@ def suying_checkin() -> None:
     logger.info(checkin_resp.json())
 
 
+def smzdm_checkin() -> None:
+    """什么值得买签到
+    """
+
+    logger = logging.getLogger("smzdm")
+
+    client = httpx.Client()
+    sess_cookie = os.environ["SMZDM_SESS_COOKIE"]
+
+    checkin_resp = client.get(
+        url="https://zhiyou.smzdm.com/user/checkin/jsonp_checkin",
+        cookies={"sess": sess_cookie},
+        headers={
+            "User-Agent": USER_AGENT,
+            "Referer": "https://www.smzdm.com/"
+        }
+    )
+    logger.info(
+        "continue_checkin_days: "
+        + str(checkin_resp.json()["data"]["continue_checkin_days"])
+    )
+
+
 if __name__ == "__main__":
 
     logging.config.dictConfig({
@@ -266,7 +281,8 @@ if __name__ == "__main__":
         vgtime_checkin,
         iyingdi_checkin,
         kkgal_checkin,
-        suying_checkin
+        suying_checkin,
+        smzdm_checkin
     ]:
         try:
             func()
