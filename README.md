@@ -53,6 +53,7 @@ fork本仓库并设置好Secret后即可自动签到.
 | :-:              | :-:              |
 | SUYING_USER     | 速鹰666用户名 |
 | SUYING_PASSWORD | 速鹰666密码   |
+
 ### 什么值得买
 
 | secret名称        | 说明                     |
