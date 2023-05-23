@@ -55,7 +55,7 @@ def lovezhuoyou_checkin() -> None:
 
     logger = logging.getLogger("lovezhuoyou")
 
-    url = "https://www.lovezhuoyou.com/wp-admin/admin-ajax.php"
+    url = "https://www.zhuoyoux.com/wp-admin/admin-ajax.php"
 
     client = httpx.Client(timeout=50)
     username = os.environ["LOVEZHUOYOU_USER"]
